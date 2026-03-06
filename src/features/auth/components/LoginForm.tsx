@@ -1,9 +1,11 @@
-import Form from "@/components/forms/Form";
+"use client"
+
+import {Form, FormLabel} from "@/components/forms";
 
 export default function LoginForm() {
   return (
     <Form>
-      <label className="block" htmlFor="email">Email</label>
+      <FormLabel htmlFor="email">Email</FormLabel>
       <input
         type="text"
         id="email"
@@ -11,7 +13,7 @@ export default function LoginForm() {
         className="border border-slate-200 w-full p-2"
       />
 
-      <label className="block" htmlFor="password">Password</label>
+      <FormLabel htmlFor="password">Email</FormLabel>
       <input
         type="password"
         id="password"
