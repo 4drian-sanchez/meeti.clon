@@ -1,3 +1,4 @@
+import clsx from "clsx";
 
 type HeadingType = {
     children: React.ReactNode
@@ -19,6 +20,6 @@ export default function Heading({ children, level = 1, className }: HeadingType)
     }
 
     return (
-        <Tag className={`font-black uppercase ${sizeMap[level]} ${className}`}> {children} </Tag>
+        <Tag className={clsx('font-black uppercase', sizeMap[level], className)}> {children} </Tag>
     );
 }
