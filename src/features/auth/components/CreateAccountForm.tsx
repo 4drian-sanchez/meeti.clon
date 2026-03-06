@@ -3,7 +3,9 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormLabel, FormInput, FormSubmit, FormError } from "@/components/forms";
-import { SignupInputs, signupSchema } from '../../schemas/authSchemas';
+import { SignupInputs, signupSchema } from '../schemas/authSchemas';
+import { signupAction } from '../actions/signup.action';
+import {toast} from 'react-hot-toast'
 
 export default function CreateAccountForm() {
 
@@ -11,8 +13,16 @@ export default function CreateAccountForm() {
         resolver: zodResolver(signupSchema)
     })
     
-    const onSubmit = (data : SignupInputs) => {
-        console.log(data);
+    const onSubmit = async (inputs : SignupInputs) => {
+        const {error, success} = await signupAction(inputs)
+
+        if(error) {
+            toast.error(error)
+        }
+
+        if(success) {
+            toast.success(success)
+        }
     }
 
     return (
