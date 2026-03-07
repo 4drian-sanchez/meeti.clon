@@ -16,4 +16,11 @@ export const signupSchema = baseAuthSchema.pick({
    return data.password === data.passwordConfirmation
 }, {error: 'Los passwords no son iguales', path: ['passwordConfirmation']})
 
+export const signinSchema = baseAuthSchema.pick({
+    email: true
+}).extend({
+    password: z.string().trim().min(1, 'Ingresa tu password'),
+})
+
 export type SignupInputs = z.infer<typeof signupSchema>
+export type SigninInputs = z.infer<typeof signinSchema>

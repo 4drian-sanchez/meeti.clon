@@ -9,7 +9,7 @@ import {toast} from 'react-hot-toast'
 
 export default function CreateAccountForm() {
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: zodResolver(signupSchema)
     })
     
@@ -22,6 +22,7 @@ export default function CreateAccountForm() {
 
         if(success) {
             toast.success(success)
+            reset()
         }
     }
 
