@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { SigninInputs, signinSchema } from "../schemas/authSchemas";
 import { signinAction } from "../actions/signin.action";
 import {toast} from 'react-hot-toast'
+import { redirect } from "next/navigation";
 
 export default function LoginForm() {
 
@@ -14,10 +15,14 @@ export default function LoginForm() {
   })
 
   const onSubmit = async (inputs : SigninInputs) => {
-    const response = await signinAction(inputs)
+    const {error, success} = await signinAction(inputs)
 
-    if(response.error) {
-        toast.error(response.error)
+    if(error) {
+        toast.error(error)
+    }
+
+    if(success) {
+      redirect('/dashboard')
     }
   }
 

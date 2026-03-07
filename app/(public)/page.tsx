@@ -6,10 +6,11 @@ export const metadata : Metadata = {
   title: generatePageTitle('Inicio')
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  
   return (
-    <div>
+    <>
       <Hero/>
-    </div>
+    </>
   );
 }

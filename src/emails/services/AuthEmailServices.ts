@@ -1,7 +1,7 @@
 import { emailConfig } from "../config/config";
 import { renderVerificationEmail, renderVerificationEmailText } from "../templates/verificationEmail";
 import { VerificationEmailData } from "../types/email.types";
-import { EmailService } from "./emailService";
+import { EmailService } from "./EmailService";
 
 
 export class AuthEmailService {
