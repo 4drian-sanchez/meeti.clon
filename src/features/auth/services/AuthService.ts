@@ -65,6 +65,7 @@ class AuthService {
             }
         }
         catch (error) {
+            //* Password incorrecto
             if ((error as ApiError).statusCode === 401) {
                 return {
                     error: 'Password incorrecto',
@@ -72,6 +73,13 @@ class AuthService {
                 }
             }
 
+            //* Cuenta no confirmada
+            if ((error as ApiError).statusCode === 403) {
+                return {
+                    error: 'Tu cuenta no ha sido confirmada. Te enviamos enviado un email de confirmación',
+                    success: ''
+                }
+            }
             return {
                 error: 'Error interno',
                 success: ''
