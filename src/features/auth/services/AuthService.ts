@@ -1,8 +1,9 @@
 import { auth } from "@/src/lib/auth";
-import { SigninInputs, SignupInputs } from "../schemas/authSchemas";
+import { ForgotPassword, ResetPassword, SigninInputs, SignupInputs } from "../schemas/authSchemas";
 import { authRepository, IAuthRepository } from './AuthRepository';
 import { headers } from "next/headers";
 import { ApiError } from "next/dist/server/api-utils";
+import { AuthEmailService } from '../../../emails/services/AuthEmailServices';
 
 class AuthService {
 
@@ -84,6 +85,58 @@ class AuthService {
             }
             return {
                 error: 'Error interno',
+                success: ''
+            }
+        }
+    }
+
+    async forgotPassword(credentials: ForgotPassword) {
+        const user = await this.authRepository.userExists(credentials.email)
+
+        if (!user) {
+            return {
+                error: 'El usuario no existe. Por favor intenta de nuevo',
+                success: ''
+            }
+        }
+
+        await auth.api.requestPasswordReset({
+            body: {
+                email: user.email
+            }
+        })
+
+        return {
+            error: '',
+            success: 'Hemos enviado un Email con instruciones para cambiar tu contraseña'
+        }
+    }
+
+    async resetPassword(newPassword: string, token: string) {
+
+        try {
+            await auth.api.resetPassword({
+                body: {
+                    newPassword,
+                    token
+                }
+            })
+
+            return {
+                error: '',
+                success: 'El reestablecido correctamente'
+            }
+
+        } catch (error) {
+            if (error instanceof ApiError) {
+                return {
+                    error: 'Hubo un error. Token no válido',
+                    success: ''
+                }
+            }
+
+            return {
+                error: 'Error interno en el servidor',
                 success: ''
             }
         }
