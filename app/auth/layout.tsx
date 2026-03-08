@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Logo from "@/components/ui/Logo";
-import {Toaster} from 'react-hot-toast'
 
 export default function AuthLayout({
   children,
@@ -17,10 +16,6 @@ export default function AuthLayout({
       <main className="max-w-2xl mx-auto py-16 px-5">
         {children}
       </main>
-
-      <Toaster 
-        position="top-right"
-      />
     </>
   );
 }

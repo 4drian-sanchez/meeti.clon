@@ -8,8 +8,12 @@ class CommunityService {
     ){}
 
     async createCommunity( data: CommunityInput, userId: string ) {
-        console.log(data)
-        console.log(userId)
+        const createdCommunity = await this.communityRepository.create({
+            ...data,
+            createdBy: userId
+        })
+
+        return createdCommunity
     }
 
 }

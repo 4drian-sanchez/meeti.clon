@@ -6,6 +6,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CommunityInput, CommunitySchema } from "../schemas/communitiesSchema";
 import { communityAction } from "../actions/community.action";
+import toast from "react-hot-toast";
+import { redirect } from "next/navigation";
 
 export default function CreateCommunity() {
 
@@ -18,7 +20,16 @@ export default function CreateCommunity() {
     })
 
     const onSubmit = async (data : CommunityInput) => {
-        await communityAction(data)
+        const {error, success} = await communityAction(data)
+
+        if(error) {
+            toast.error(error)
+        }
+
+        if(success) {
+            toast.success(success)
+            redirect('/dashboard/communities')
+        }
     }
 
     return (
