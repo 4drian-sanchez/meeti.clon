@@ -4,7 +4,7 @@ import { Form, FormSubmit } from "@/components/forms";
 import CommunityForm from "./CommunityForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CommunityInput, CommunitySchema } from "../schemas/communitiesSchema";
+import { CommunityInput, communitySchema } from "../schemas/communitiesSchema";
 import { communityAction } from "../actions/community.action";
 import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
@@ -12,7 +12,7 @@ import { redirect } from "next/navigation";
 export default function CreateCommunity() {
 
     const methods = useForm({
-        resolver: zodResolver(CommunitySchema),
+        resolver: zodResolver(communitySchema),
         defaultValues: {
             name: '',
             description: ''

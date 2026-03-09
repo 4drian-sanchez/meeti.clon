@@ -1,12 +1,14 @@
 "use server"
 
 import { requireAuth } from "@/src/lib/auth-server";
-import { CommunityInput, CommunitySchema } from "../schemas/communitiesSchema";
+import { CommunityInput, communitySchema } from "../schemas/communitiesSchema";
 import { communityService } from "../services/CommunityService";
+import { redirect } from "next/navigation";
+import { CommunityPolicy } from "../policies/CommunityPolicy";
 
 export async function communityAction(data: CommunityInput) {
 
-    const validateData = CommunitySchema.safeParse(data)
+    const validateData = communitySchema.safeParse(data)
     if (!validateData.success) {
         return {
             error: 'Hubo un error',
@@ -28,5 +30,19 @@ export async function communityAction(data: CommunityInput) {
         error: '',
         success: 'Comunidad creada con exito'
     }
+}
+
+export async function updatedCommunity( data: CommunityInput, communityId: string ) {
+
+    const validateData = communitySchema.safeParse(data)
+    if(!validateData.success) {
+        return {
+            error: 'Hubo un error',
+            success: ''
+        }
+    }
+
+    const updatedResponse = await communityService.updatedCommunity(communityId, data)
+    return updatedResponse
 
 }

@@ -1,12 +1,14 @@
-import { auth } from "@/src/lib/auth"
-import { InsertComunity, SelectComunity } from "../types/community.types"
-import { db } from "@/src/db"
-import { community } from "@/src/db/schemas/comunity"
-import { eq } from "drizzle-orm"
+import { InsertComunity, SelectComunity } from '../types/community.types';
+import { db } from "@/src/db";
+import { community } from "@/src/db/schemas/comunity";
+import { eq } from "drizzle-orm";
+import { CommunityInput } from '../schemas/communitiesSchema';
 
 export interface ICommunityRepository {
     create: ( data : InsertComunity ) => Promise<SelectComunity>
-    findCommunitiesBy( userId : string, limit: number ) : Promise<SelectComunity[]>
+    findCommunitiesByUser( userId : string, limit: number ) : Promise<SelectComunity[]>
+    findCommunityById( communityId : string ) : Promise<SelectComunity | undefined>
+    updatedCommunity( communityId : string, data: CommunityInput) : Promise<void>
 }
 
 class CommunityRepository implements ICommunityRepository {
@@ -16,13 +18,29 @@ class CommunityRepository implements ICommunityRepository {
         return createdCommunity
     }
 
-    async findCommunitiesBy(userId: string, limit: number): Promise<SelectComunity[]> {
+    async findCommunitiesByUser(userId: string, limit: number): Promise<SelectComunity[]> {
         const communities = await db
                                     .select()
                                     .from(community)
                                     .where( eq(community.createdBy, userId))
                                     .limit(limit)
         return communities
+    }
+
+    async findCommunityById(communityId: string): Promise<SelectComunity | undefined> {
+        const [ communityById ] = await db
+                                    .select()
+                                    .from(community)
+                                    .where( eq(community.id, communityId))
+                                    .limit(1)
+        return communityById
+    }
+
+    async updatedCommunity(communityId: string, data: CommunityInput): Promise<void> {
+        await db
+                .update(community)
+                .set({...data})
+                .where( eq(community.id, communityId ) )
     }
 
 }

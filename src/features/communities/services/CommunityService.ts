@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { User } from "../../auth/types";
 import { CommunityPolicy } from "../policies/CommunityPolicy";
 import { MembershipPolicy } from "../policies/MembershipPolicy";
@@ -7,10 +8,10 @@ import { ICommunityRepository, communityRepository } from "./CommunityRepository
 class CommunityService {
 
     constructor(
-        private readonly communityRepository : ICommunityRepository
-    ){}
+        private readonly communityRepository: ICommunityRepository
+    ) { }
 
-    async createCommunity( data: CommunityInput, userId: string ) {
+    async createCommunity(data: CommunityInput, userId: string) {
         const createdCommunity = await this.communityRepository.create({
             ...data,
             createdBy: userId
@@ -19,10 +20,10 @@ class CommunityService {
         return createdCommunity
     }
 
-    async findCommunitiesBy( user : User, limit = 10 ) {
-        const communities = await communityRepository.findCommunitiesBy(user.id, limit)
+    async getCommunitiesByUser(user: User, limit = 10) {
+        const communities = await communityRepository.findCommunitiesByUser(user.id, limit)
 
-        const enriched = Promise.all( communities.map( async ( community ) => {
+        const enriched = Promise.all(communities.map(async (community) => {
 
             const isMember = true
             const isAdmin = CommunityPolicy.isAdmin(user, community)
@@ -41,10 +42,45 @@ class CommunityService {
                 }
             }
 
-        } ) )
+        }))
         return enriched
+    }
+
+    async getCommunityById(communityId: string) {
+        const community = await communityRepository.findCommunityById(communityId)
+        if (!community) notFound()
+        return community
+    }
+
+    async getCommunityDetails(communityId: string, user: User) {
+        const community = await this.getCommunityById(communityId)
+
+        const isMember = false
+        const isAdmin = CommunityPolicy.isAdmin(user, community)
+
+        return {
+            data: community,
+            context: {
+                isAdmin,
+                isMember
+            },
+            permissions: {
+                canEdit: MembershipPolicy.canEdit(user, community),
+                canDelete: MembershipPolicy.canDelete(user, community),
+                canJoin: MembershipPolicy.canJoin(user, community, isMember),
+                canViewMembers: CommunityPolicy.canViewMembers(user, community)
+            }
+        }
+    }
+
+    async updatedCommunity(communityId: string, data: CommunityInput) {
+        await this.communityRepository.updatedCommunity(communityId, data)
+        return {
+            error: '',
+            success: 'Comunidad actualizada'
+        }
     }
 
 }
 
-export const communityService = new CommunityService(communityRepository)
+export const communityService = new CommunityService(communityRepository) 

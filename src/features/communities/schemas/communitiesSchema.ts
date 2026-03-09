@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const CommunitySchema = z.object({
+export const communitySchema = z.object({
   name: z.string()
           .min(3, {error: 'El Titulo de la Comunidad es Obligatorio'}),
   description: z.string()
@@ -12,4 +12,4 @@ image: z.url({
 })
 })
 
-export type CommunityInput = z.infer<typeof CommunitySchema>
+export type CommunityInput = z.infer<typeof communitySchema>

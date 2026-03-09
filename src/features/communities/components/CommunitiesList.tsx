@@ -9,7 +9,7 @@ export default async function CommunitiesList() {
     const { session } = await requireAuth()
     if (!session) redirect('/auth/login')
 
-    const communities = await communityService.findCommunitiesBy(session.user)
+    const communities = await communityService.getCommunitiesByUser(session.user)
     
     return (
         <>

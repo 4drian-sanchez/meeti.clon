@@ -8,7 +8,9 @@ import FormError from '../forms/FormError';
 
 export default function UploadImage() {
     const [uploadedImage, setUploadedImage] = useState('')
-    const { setValue, formState: {errors} } = useFormContext<CommunityInput>()
+    const { setValue, formState: { errors }, getValues } = useFormContext<CommunityInput>()
+
+    const currentImage = getValues('image') ? getValues('image') : null
 
     return (
         <>
@@ -17,7 +19,7 @@ export default function UploadImage() {
                 className="ut-button:bg-orange-600 hover:ut-button:bg-orange-700"
                 onClientUploadComplete={(res) => {
                     setUploadedImage(res[0].ufsUrl);
-                    setValue('image', res[0].ufsUrl, {shouldValidate: true});
+                    setValue('image', res[0].ufsUrl, { shouldValidate: true });
                 }}
                 appearance={{
                     button: "font-black py-3 w-full block h-auto rounded-none after:bg-orange-500 after:h-2 after:top-0",
@@ -45,7 +47,20 @@ export default function UploadImage() {
                 </>
             }
 
-            { errors.image && <FormError>{errors.image.message}</FormError> }
+            {
+                currentImage && !uploadedImage &&
+                <>
+                    <p className="font-bold text-lg">Imagen subida</p>
+                    <Image
+                        src={currentImage}
+                        alt='Imagen de la comunidad'
+                        width={200}
+                        height={300}
+                    />
+                </>
+            }
+
+            {errors.image && <FormError>{errors.image.message}</FormError>}
         </>
     );
 }
