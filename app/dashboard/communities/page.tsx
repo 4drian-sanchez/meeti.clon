@@ -2,7 +2,8 @@ import Heading from "@/components/typography/Heading";
 import generatePageTitle from "@/src/shared/utils/metadata";
 import { Metadata } from "next";
 import Link from "next/link";
-import CommunitiesList from "../../../src/features/communities/components/CommunitiesList";
+import CommunitiesList from "@/src/features/communities/components/CommunitiesList";
+import DeleteCommunityModal from "@/src/features/communities/components/DeleteCommunityModal";
 
 const title = 'Administra tus comunidades'
 
@@ -27,6 +28,7 @@ export default function CommunitiesPage() {
       </div>
 
       <CommunitiesList />
+      <DeleteCommunityModal />
     </>
   );
 }

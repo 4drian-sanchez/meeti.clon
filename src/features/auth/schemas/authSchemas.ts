@@ -34,9 +34,12 @@ export const resetPasswordSchema = baseAuthSchema.pick({
    return data.newPassword === data.passwordConfirmation
 }, {error: 'Los passwords no son iguales', path: ['passwordConfirmation']})
 
-
+export const CheckPasswordSchema = z.object({
+    password: z.string().min(1, {error: 'El password es obligatorio'})
+})
 
 export type SignupInputs = z.infer<typeof signupSchema>
 export type SigninInputs = z.infer<typeof signinSchema>
 export type ForgotPassword = z.infer<typeof forgotPasswordSchema>
 export type ResetPassword = z.infer<typeof resetPasswordSchema>
+export type CheckPassword = z.infer<typeof CheckPasswordSchema>

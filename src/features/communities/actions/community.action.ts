@@ -5,6 +5,7 @@ import { CommunityInput, communitySchema } from "../schemas/communitiesSchema";
 import { communityService } from "../services/CommunityService";
 import { redirect } from "next/navigation";
 import { CommunityPolicy } from "../policies/CommunityPolicy";
+import { CheckPassword, CheckPasswordSchema } from "../../auth/schemas/authSchemas";
 
 export async function communityAction(data: CommunityInput) {
 
@@ -32,10 +33,10 @@ export async function communityAction(data: CommunityInput) {
     }
 }
 
-export async function updatedCommunity( data: CommunityInput, communityId: string ) {
+export async function updatedCommunity(data: CommunityInput, communityId: string) {
 
     const validateData = communitySchema.safeParse(data)
-    if(!validateData.success) {
+    if (!validateData.success) {
         return {
             error: 'Hubo un error',
             success: ''
@@ -44,5 +45,22 @@ export async function updatedCommunity( data: CommunityInput, communityId: strin
 
     const updatedResponse = await communityService.updatedCommunity(communityId, data)
     return updatedResponse
+
+}
+
+export async function deleteCommunityAction(password: string, communityId: string) {
+    const validateData = CheckPasswordSchema.safeParse({password})
+    if (!validateData.success) {
+        return {
+            error: 'Hubo un error',
+            success: ''
+        }
+    }
+
+    const {session} = await requireAuth()
+    if(!session) redirect('/auth/login')
+
+    const response = await communityService.deleteCommunity(password, communityId, session.user)
+    return response
 
 }
