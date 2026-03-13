@@ -6,11 +6,13 @@ import { CommunityInput } from "../schemas/communitiesSchema";
 import { ICommunityRepository, communityRepository } from "./CommunityRepository";
 import { checkPassword } from "@/src/shared/utils/auth";
 import { deleteUTFiles } from "@/src/lib/uploadthing-server";
+import { IMembershipRepository, membershipRepository } from './MembershipRepository';
 
 class CommunityService {
 
     constructor(
-        private readonly communityRepository: ICommunityRepository
+        private readonly communityRepository: ICommunityRepository,
+        private readonly membershipRepository: IMembershipRepository
     ) { }
 
     async createCommunity(data: CommunityInput, userId: string) {
@@ -27,7 +29,7 @@ class CommunityService {
 
         const enriched = Promise.all(communities.map(async (community) => {
 
-            const isMember = false
+            const isMember = await membershipRepository.isMember(community.id, user.id)
             const isAdmin = CommunityPolicy.isAdmin(user, community)
 
             return {
@@ -65,7 +67,7 @@ class CommunityService {
             }
         }
 
-        const isMember = false
+        const isMember = await membershipRepository.isMember(community.id, user.id)
         const isAdmin = CommunityPolicy.isAdmin(user, community)
 
         return {
@@ -123,4 +125,4 @@ class CommunityService {
 
 }
 
-export const communityService = new CommunityService(communityRepository) 
+export const communityService = new CommunityService(communityRepository, membershipRepository) 

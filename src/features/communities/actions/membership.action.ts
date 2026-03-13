@@ -11,5 +11,6 @@ export async function MembershipAction( communityId: string ) {
 
     //*Agregar usuario
 
-    await membershipService.toggleMembership(communityId, session.user)
+    const response = await membershipService.toggleMembership(communityId, session.user)
+    return response
 }

@@ -20,12 +20,26 @@ class MembershipService {
         // Si no es miembro, unir
         const isMember = await this.membershipRepository.isMember(communityId, user.id)
 
-        if(MembershipPolicy.canJoin(user, community, isMember)) {
+        if (MembershipPolicy.canJoin(user, community, isMember)) {
             await this.membershipRepository.addMember(communityId, user.id)
+            return {
+                success: true,
+                message: `Te has unido a la comunidad ${community.name}`,
+                newPermissions: {
+                    canJoin: false
+                }
+            }
         }
 
-        if(MembershipPolicy.canLeave(user, community, isMember)) {
-            console.log('Salir')
+        if (MembershipPolicy.canLeave(user, community, isMember)) {
+            await this.membershipRepository.removeMember(community.id, user.id)
+            return {
+                success: true,
+                message: `Te has salido de la comunidad ${community.name}`,
+                newPermissions: {
+                    canJoin: true
+                }
+            }
         }
     }
 
