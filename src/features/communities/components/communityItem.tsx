@@ -3,11 +3,10 @@ import { CommunityWithPermissions } from "../types/community.types"
 import Link from "next/link"
 import CommunityDropdownMenu from "./communityDropdownMenu"
 
-
 export default function CommunityItem({ community }: { community: CommunityWithPermissions }) {
 
-    const { data: { image, name, description }, context: {isAdmin} } = community
-
+    const { data: { image, name, description, id }, context: {isAdmin} } = community
+    
     return (
         <li className="flex justify-between gap-x-6 py-5">
             <div className="flex items-start min-w-0 gap-x-4">
@@ -21,7 +20,7 @@ export default function CommunityItem({ community }: { community: CommunityWithP
                     />
                 </div>
                 <div className="min-w-0 flex-auto">
-                    <Link href={`/`} className="hover:underline font-bold text-lg">
+                    <Link href={`/communities/${id}`} className="hover:underline font-bold text-lg">
                         {name}
                     </Link>
                     <p className="text-gray-600 text-sm">{description}</p>

@@ -27,7 +27,7 @@ class CommunityService {
 
         const enriched = Promise.all(communities.map(async (community) => {
 
-            const isMember = true
+            const isMember = false
             const isAdmin = CommunityPolicy.isAdmin(user, community)
 
             return {
@@ -54,8 +54,16 @@ class CommunityService {
         return community
     }
 
-    async getCommunityDetails(communityId: string, user: User) {
+    async getCommunityDetails(communityId: string, user?: User) {
         const community = await this.getCommunityById(communityId)
+
+        if(!user) {
+            return {
+                data: community,
+                context: null,
+                permissions: null
+            }
+        }
 
         const isMember = false
         const isAdmin = CommunityPolicy.isAdmin(user, community)
@@ -70,6 +78,7 @@ class CommunityService {
                 canEdit: MembershipPolicy.canEdit(user, community),
                 canDelete: MembershipPolicy.canDelete(user, community),
                 canJoin: MembershipPolicy.canJoin(user, community, isMember),
+                canLeave: MembershipPolicy.canLeave(user, community, isMember),
                 canViewMembers: CommunityPolicy.canViewMembers(user, community)
             }
         }

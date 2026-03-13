@@ -10,11 +10,21 @@ export class MembershipPolicy {
         return user.id === community.createdBy
     }
 
-    static canJoin( user: User, community: SelectComunity, isMember: boolean ) : boolean {
-        //* EL admin no puede unirse a la comunidad
-        if( user.id === community.createdBy ) return false
+    static canLeave( user: User, community: SelectComunity, isMember: boolean ) : boolean {
+        //* EL admin no puede salirse a la comunidad
+        if( user.id === community.createdBy )  return false
+        
 
         //* Solo mienbros se pueden unir en la comunidad
         return isMember
+    }
+
+    static canJoin( user: User, community: SelectComunity, isMember: boolean ) : boolean {
+
+        if( isMember ) return false
+        //* EL admin no puede unirse a la comunidad
+        if( user.id === community.createdBy )  return false
+        
+        return true
     }
 }
