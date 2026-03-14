@@ -42,6 +42,7 @@ class CommunityService {
                     canEdit: MembershipPolicy.canEdit(user, community),
                     canDelete: MembershipPolicy.canDelete(user, community),
                     canJoin: MembershipPolicy.canJoin(user, community, isMember),
+                    canLeave: MembershipPolicy.canLeave(user, community, isMember),
                     canViewMembers: CommunityPolicy.canViewMembers(user, community)
                 }
             }

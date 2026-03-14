@@ -24,7 +24,6 @@ export default function CommunityMembership({ permissions, communityId }: Commun
     return (
         <>
 
-
             <button
                 onClick={() => handleCanJoin()}
                 className={`${canJoin ? 'bg-orange-600' : 'bg-red-600'} font-bold text-lg w-full lg:w-auto px-5 py-2 text-white cursor-pointer`}

@@ -1,3 +1,4 @@
+import { CommunityPolicy } from '../policies/CommunityPolicy';
 import { MembershipPolicy } from '../policies/MembershipPolicy';
 import { communityRepository, ICommunityRepository } from './CommunityRepository';
 import { IMembershipRepository, membershipRepository } from './MembershipRepository';
@@ -41,6 +42,33 @@ class MembershipService {
                 }
             }
         }
+    }
+
+    async getJoinedCommunities(user: User) {
+        const joined = await this.membershipRepository.findJoinedCommunities(user.id)
+
+        const enriched = Promise.all(joined.map(async ({community}) => {
+
+            const isMember = await membershipRepository.isMember(community.id, user.id)
+            const isAdmin = CommunityPolicy.isAdmin(user, community)
+
+            return {
+                data: community,
+                context: {
+                    isAdmin,
+                    isMember
+                },
+                permissions: {
+                    canEdit: MembershipPolicy.canEdit(user, community),
+                    canDelete: MembershipPolicy.canDelete(user, community),
+                    canJoin: MembershipPolicy.canJoin(user, community, isMember),
+                    canLeave: MembershipPolicy.canLeave(user, community, isMember),
+                    canViewMembers: CommunityPolicy.canViewMembers(user, community)
+                }
+            }
+
+        }))
+        return enriched
     }
 
 }

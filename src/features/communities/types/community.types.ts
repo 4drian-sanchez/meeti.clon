@@ -1,7 +1,15 @@
-import { comunity } from "@/src/db/schemas"
+import { communityMembers, comunity } from "@/src/db/schemas"
+import { User } from "better-auth"
 
 export type InsertComunity = typeof comunity.$inferInsert
 export type SelectComunity = typeof comunity.$inferSelect
+export type SelectCommunitiesMembers = typeof communityMembers.$inferSelect
+
+export type JoinedCommunities = SelectCommunitiesMembers & {
+    community: SelectComunity;
+    user: User
+}
+
 
 export type CommunityPermissions = {
     canEdit: boolean;
