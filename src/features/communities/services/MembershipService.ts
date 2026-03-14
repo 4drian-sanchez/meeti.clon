@@ -51,9 +51,11 @@ class MembershipService {
 
             const isMember = await membershipRepository.isMember(community.id, user.id)
             const isAdmin = CommunityPolicy.isAdmin(user, community)
+            const membersCount = await this.membershipRepository.getMembersCount(community.id)
 
             return {
                 data: community,
+                membersCount,
                 context: {
                     isAdmin,
                     isMember

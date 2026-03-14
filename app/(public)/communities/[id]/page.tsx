@@ -1,8 +1,22 @@
+import { pluralize } from "@/src/db/utils/strings";
 import CommunitiesActionPanel from "@/src/features/communities/components/CommunitiesActionPanel";
 import { communityService } from "@/src/features/communities/services/CommunityService";
 import { requireAuth } from "@/src/lib/auth-server";
 import Heading from "@/src/shared/components/typography/Heading";
+import generatePageTitle from "@/src/shared/utils/metadata";
+import { Metadata } from "next";
 import Image from "next/image";
+
+
+export async function generateMetadata( props : PageProps<'/communities/[id]'> ) : Promise<Metadata> {
+
+    const { id } = await props.params
+    const community = await communityService.getCommunityById(id)
+
+    return {
+        title: generatePageTitle(community.name)
+    }
+}
 
 
 export default async function CommunitiesPage(props: PageProps<'/communities/[id]'>) {
@@ -33,6 +47,7 @@ export default async function CommunitiesPage(props: PageProps<'/communities/[id
                         </div>
                         <Heading className="text-center">{community.data.name}</Heading>
                         <p className="text-gray-600 text-lg text-center">{community.data.description}</p>
+                        <p className="text-gray-600 text-sm text-center">{community.membersCount} {pluralize('mienbro', community.membersCount!)}</p>
                     </div>
                     <div className="bg-slate-100 p-5 rounded-2xl">
                         {/* Admin Aquí */}

@@ -2,6 +2,7 @@ import Image from "next/image"
 import { CommunityWithPermissions } from "../types/community.types"
 import Link from "next/link"
 import CommunityDropdownMenu from "./communityDropdownMenu"
+import { pluralize } from "@/src/db/utils/strings"
 
 export default function CommunityItem({ community }: { community: CommunityWithPermissions }) {
 
@@ -24,7 +25,7 @@ export default function CommunityItem({ community }: { community: CommunityWithP
                         {name}
                     </Link>
                     <p className="text-gray-600 text-sm">{description}</p>
-                    <p className="text-gray-600 text-sm"></p>
+                    <p className="text-gray-600 text-sm">{community.membersCount} {pluralize('mienbro', community.membersCount)}</p>
                 </div>
             </div>
             <div className="flex shrink-0 items-center gap-x-6">
