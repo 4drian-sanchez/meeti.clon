@@ -3,5 +3,5 @@
 @source '../node_modules/@uploadthing/react/dist';
 
 @utility bg-hero {
-    background-image: url('/hero.jpg')
+    background-image: url('/hero.jpg');
 }

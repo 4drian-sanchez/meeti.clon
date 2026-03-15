@@ -1,5 +1,6 @@
 import { accounts, sessions, users, verifications } from './auth'
 import { community, communityMembers } from './comunity'
+import { NotificationSchema } from './notification'
 
 
 export {
@@ -8,5 +9,6 @@ export {
     users,
     verifications,
     community as comunity,
-    communityMembers
+    communityMembers,
+    NotificationSchema
 }

@@ -1,3 +1,4 @@
+import { INotificationRepository, notificationRepository } from '../../notifications/services/Notification.repository';
 import { CommunityPolicy } from '../policies/CommunityPolicy';
 import { MembershipPolicy } from '../policies/MembershipPolicy';
 import { communityRepository, ICommunityRepository } from './CommunityRepository';
@@ -9,7 +10,8 @@ class MembershipService {
 
     constructor(
         private readonly membershipRepository: IMembershipRepository,
-        private readonly communityRepository: ICommunityRepository
+        private readonly communityRepository: ICommunityRepository,
+        private readonly notificationRepository: INotificationRepository
     ) { }
 
     async toggleMembership(communityId: string, user: User) {
@@ -20,9 +22,21 @@ class MembershipService {
 
         // Si no es miembro, unir
         const isMember = await this.membershipRepository.isMember(communityId, user.id)
-
+        
+        // Unir mienbro
         if (MembershipPolicy.canJoin(user, community, isMember)) {
+
             await this.membershipRepository.addMember(communityId, user.id)
+
+            //Notificación
+            await this.notificationRepository.create({
+                userId: community.createdBy,
+                actorName: user.name,
+                message: `El usuario ${user.name} se ha unido a tu comunidad ${community.name}`,
+                target: community.name
+            })
+
+
             return {
                 success: true,
                 message: `Te has unido a la comunidad ${community.name}`,
@@ -32,6 +46,7 @@ class MembershipService {
             }
         }
 
+        //salir mienbro
         if (MembershipPolicy.canLeave(user, community, isMember)) {
             await this.membershipRepository.removeMember(community.id, user.id)
             return {
@@ -75,4 +90,4 @@ class MembershipService {
 
 }
 
-export const membershipService = new MembershipService(membershipRepository, communityRepository)
+export const membershipService = new MembershipService(membershipRepository, communityRepository, notificationRepository)
