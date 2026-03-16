@@ -1,5 +1,10 @@
+"use client"
+
 import { formatCreatedDate } from "@/src/shared/utils/date";
 import { SelectNotification } from "../../types/notification.types";
+import { useEffect, useState } from "react";
+import { useSession } from "@/src/lib/auth-client";
+import Pusher from 'pusher-js'
 
 type Props = {
     notifications: SelectNotification[]
@@ -7,12 +12,34 @@ type Props = {
 
 
 export default function NotificationsList( {notifications} : Props ) {
+
+    const { data } = useSession()
+    const [ unreadNotifications, setUnreadNotifications ] = useState(notifications)
+
+      useEffect(() => {
+        const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+          cluster: process.env.NEXT_PUBLIC_PUSHER_CLOSTER!
+        })
+    
+        const id = `notification-channel-${data?.user.id}`
+        const channel = pusher.subscribe(id)
+        channel.bind('new-notification', (notification: SelectNotification) => {
+          setUnreadNotifications( (prevState) =>[notification ,...prevState] )
+        })
+    
+        return () => {
+          channel.unbind_all()
+          channel.unsubscribe()
+        }
+    
+      }, [data])
+
   return (
     <>
         {
-            notifications.length
+            unreadNotifications.length
             ? (
-                notifications.map( notification => (
+                unreadNotifications.map( notification => (
                     <div key={notification.id} className="p-4 rounded-lg shadow-xs shadow-gray-300">
                         <p>
                             { notification.actorName } - {notification.message} {''}

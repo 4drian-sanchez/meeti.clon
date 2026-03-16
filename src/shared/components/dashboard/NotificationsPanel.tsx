@@ -1,13 +1,38 @@
-import { BellIcon } from '@heroicons/react/24/outline'
+import { Suspense, use, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Suspense, use } from 'react'
+import Pusher from 'pusher-js'
+import { useSession } from '@/src/lib/auth-client'
+import { BellIcon } from '@heroicons/react/24/outline'
+import { SelectNotification } from '@/src/features/types/notification.types'
 
-const promise = fetch('/api/notification').then( res => res.json() )
+const promise = fetch('/api/notification').then(res => res.json())
 
 function NotificationCount() {
+
+  const { data } = useSession()
+
   //* La manera forma de hacer peticiones en el cliente con react
-  const totalNotifications = use( promise )
-  
+  const unreadNotifitication : number = use(promise)
+  const [ totalNotifications, setTotalNotifications ] = useState(unreadNotifitication)
+
+  useEffect(() => {
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLOSTER!
+    })
+
+    const id = `notification-channel-${data?.user.id}`
+    const channel = pusher.subscribe(id)
+    channel.bind('new-notification', (notification: SelectNotification) => {
+      setTotalNotifications( (prevState) => prevState + 1 )
+    })
+
+    return () => {
+      channel.unbind_all()
+      channel.unsubscribe()
+    }
+
+  }, [data])
+
   return (
     <Link
       href="/dashboard/notifications"
@@ -26,8 +51,8 @@ function NotificationCount() {
 
 export default function NotificationsPanel() {
   return (
-      <Suspense fallback='Cargando...'>
-        <NotificationCount />
-      </Suspense>
+    <Suspense fallback='Cargando...'>
+      <NotificationCount />
+    </Suspense>
   )
 }
