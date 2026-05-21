@@ -1,34 +1,41 @@
 "use client"
 
-import { FormInput, FormLabel, FormTextarea, FormToggle} from '@/components/forms'
+import { FormError, FormInput, FormLabel, FormTextarea, FormToggle } from '@/components/forms'
 import CommunitiesFormField from './CommunitiesFormField'
 import CategoriesFormField from './CategoriesFormField'
-import { useSession } from '@/src/lib/auth-client'
+import dynamic from 'next/dynamic'
+import { useFormContext } from 'react-hook-form'
+import { MeetiInput } from '../schemas/meetiSchema'
+
+const DynamicLocationPicker = dynamic(() => import('./LocationPicker'), { ssr: false });
 
 export default function CreateMeetiForm() {
 
-  const { isPending } = useSession()
-
-  if(isPending) return 'cargando...'
+  const { register, formState: { errors } } = useFormContext<MeetiInput>()
 
   return (
     <>
       <fieldset className="space-y-3">
         <legend className="font-black text-4xl mb-5">Detalles Meeti</legend>
-        
+
         <FormLabel htmlFor="title">Nombre Meeti</FormLabel>
         <FormInput
           id="title"
           type="text"
           placeholder="Titulo Meeti"
+          {...register('title')}
         />
+
+        {errors.title && <FormError>{errors.title.message}</FormError>}
 
         <FormLabel htmlFor="details">Detalles Meeti</FormLabel>
         <FormTextarea
           id="details"
           placeholder="Descripción Meeti"
+          {...register('details')}
         />
-        
+        {errors.details && <FormError>{errors.details.message}</FormError>}
+
         <CategoriesFormField />
 
         <CommunitiesFormField />
@@ -39,7 +46,9 @@ export default function CreateMeetiForm() {
           min={1}
           id="availableSeats"
           placeholder="Cupo Disponible"
+          {...register('availableSeats')}
         />
+        {errors.availableSeats && <FormError>{errors.availableSeats.message}</FormError>}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div className="space-y-3">
@@ -47,7 +56,9 @@ export default function CreateMeetiForm() {
             <FormInput
               type="date"
               id="date"
+              {...register('date')}
             />
+            {errors.date && <FormError>{errors.date.message}</FormError>}
 
           </div>
           <div className="space-y-3">
@@ -75,6 +86,9 @@ export default function CreateMeetiForm() {
           type="text"
           placeholder="Nombre Lugar evento"
         />
+
+
+        <DynamicLocationPicker />
       </fieldset>
     </>
   )
