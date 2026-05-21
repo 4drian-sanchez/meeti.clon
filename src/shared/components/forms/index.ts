@@ -1,16 +1,12 @@
-import Form from "./Form";
-import FormLabel  from './FormLabel';
-import FormInput from "./FormInput";
-import FormSubmit from "./FormSubmit";
-import FormError from "./FormError";
-import FormTextarea from "./FormTextarea";
+export { Form } from "./Form";
+export { FormLabel }  from './FormLabel';
+export { FormInput } from "./FormInput";
+export { FormSubmit } from "./FormSubmit";
+export { FormError } from "./FormError";
+export { FormTextarea } from "./FormTextarea";
+export { FormToggle } from "./FormToggle";
+export { FormSelect } from "./FormSelect";
 
-
-export {
-    Form,
-    FormLabel,
-    FormInput,
-    FormSubmit,
-    FormError,
-    FormTextarea
-}
+/*
+ * Asi se hacen la exportaciones de barril para mejorar el bundle y el tree shaking (Ideal para librerias) 
+*/ 

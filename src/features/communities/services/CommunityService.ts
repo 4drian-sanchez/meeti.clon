@@ -24,6 +24,15 @@ class CommunityService {
         return createdCommunity
     }
 
+    async getCommunitiesByUserAPI( userId : string ) {
+        const communities = await communityRepository.findCommunitiesByUser(userId)
+
+        return communities.map( community => ({
+            id: community.id,
+            name: community.name
+        }) )
+    }
+
     async getCommunitiesByUser(user: User, limit = 10) {
         const communities = await communityRepository.findCommunitiesByUser(user.id, limit)
 

@@ -3,7 +3,7 @@ import { TextareaHTMLAttributes } from "react";
 
 type Props = TextareaHTMLAttributes<HTMLTextAreaElement>
 
-export default function FormTextarea(props: Props) {
+export function FormTextarea(props: Props) {
 
     const { className, children, ...restProps } = props
 

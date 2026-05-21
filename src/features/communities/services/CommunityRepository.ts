@@ -6,7 +6,7 @@ import { CommunityInput } from '../schemas/communitiesSchema';
 
 export interface ICommunityRepository {
     create: ( data : InsertComunity ) => Promise<SelectComunity>
-    findCommunitiesByUser( userId : string, limit: number ) : Promise<SelectComunity[]>
+    findCommunitiesByUser( userId : string, limit?: number ) : Promise<SelectComunity[]>
     findCommunityById( communityId : string ) : Promise<SelectComunity | undefined>
     updatedCommunity( communityId : string, data: CommunityInput) : Promise<void>
     deleteCommunity( communityId : string ) : Promise<void>
@@ -19,7 +19,7 @@ class CommunityRepository implements ICommunityRepository {
         return createdCommunity
     }
 
-    async findCommunitiesByUser(userId: string, limit: number): Promise<SelectComunity[]> {
+    async findCommunitiesByUser(userId: string, limit: number = 10): Promise<SelectComunity[]> {
         const communities = await db
                                     .select()
                                     .from(community)

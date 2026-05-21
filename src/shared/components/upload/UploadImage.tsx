@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
-import FormError from '../forms/FormError';
+import { FormError } from '../forms';
 
 export default function UploadImage() {
     const [uploadedImage, setUploadedImage] = useState('')
