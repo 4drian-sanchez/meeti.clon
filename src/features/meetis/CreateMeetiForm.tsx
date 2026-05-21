@@ -2,8 +2,14 @@
 
 import { FormInput, FormLabel, FormTextarea, FormToggle} from '@/components/forms'
 import CommunitiesFormField from './CommunitiesFormField'
+import CategoriesFormField from './CategoriesFormField'
+import { useSession } from '@/src/lib/auth-client'
 
 export default function CreateMeetiForm() {
+
+  const { isPending } = useSession()
+
+  if(isPending) return 'cargando...'
 
   return (
     <>
@@ -23,6 +29,8 @@ export default function CreateMeetiForm() {
           placeholder="Descripción Meeti"
         />
         
+        <CategoriesFormField />
+
         <CommunitiesFormField />
 
         <FormLabel htmlFor="availableSeats">Cupo</FormLabel>

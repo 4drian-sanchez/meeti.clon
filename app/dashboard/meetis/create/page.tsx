@@ -4,6 +4,8 @@ import Link from "next/link";
 import Heading from "@/src/shared/components/typography/Heading";
 import { Form, FormSubmit } from "@/src/shared/components/forms";
 import CreateMeetiForm from "@/src/features/meetis/CreateMeetiForm";
+import { requireAuth } from "@/src/lib/auth-server";
+import { redirect } from "next/navigation";
 
 const title = 'Crear Meeti'
 
@@ -12,7 +14,11 @@ export const metadata: Metadata = {
     description: 'Crear Meeti'
 }
 
-export default function MeetisCreate() {
+export default async function MeetisCreate() {
+
+    const { session } = await requireAuth()
+    if(!session) redirect('/auth/login')
+        
     return (
         <>
             <Heading>{title}</Heading>

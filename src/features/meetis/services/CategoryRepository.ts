@@ -2,7 +2,7 @@ import { db } from "@/src/db"
 import { categories, type Category } from "@/src/db/schemas/category"
 import { eq } from "drizzle-orm"
 
-interface ICategoryRepository {
+export interface ICategoryRepository {
     findAll() : Promise<Category[]>
     findById( categoryId : string ) : Promise<Category>
 }
