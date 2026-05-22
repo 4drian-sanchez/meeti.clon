@@ -6,13 +6,16 @@ import CategoriesFormField from './CategoriesFormField'
 import dynamic from 'next/dynamic'
 import { useFormContext } from 'react-hook-form'
 import { MeetiInput } from '../schemas/meetiSchema'
+import UploadImage from '@/src/shared/components/upload/UploadImage'
 
 const DynamicLocationPicker = dynamic(() => import('./LocationPicker'), { ssr: false });
 
 export default function CreateMeetiForm() {
 
-  const { register, formState: { errors } } = useFormContext<MeetiInput>()
+  const { register, formState: { errors }, watch, setValue } = useFormContext<MeetiInput>()
+  const isVirtual = watch('virtual')
 
+  console.log(errors)
   return (
     <>
       <fieldset className="space-y-3">
@@ -35,6 +38,9 @@ export default function CreateMeetiForm() {
           {...register('details')}
         />
         {errors.details && <FormError>{errors.details.message}</FormError>}
+
+        <FormLabel>Imagen del Meeti</FormLabel>
+        <UploadImage uploadImageLabel={'Imagen del Meeti'} />
 
         <CategoriesFormField />
 
@@ -61,35 +67,49 @@ export default function CreateMeetiForm() {
             {errors.date && <FormError>{errors.date.message}</FormError>}
 
           </div>
+
           <div className="space-y-3">
             <FormLabel htmlFor="time">Hora:</FormLabel>
             <FormInput
               type="time"
               step={1800}
               id="time"
+              {...register('time')}
             />
+            {errors.time && <FormError>{errors.time.message}</FormError>}
           </div>
         </div>
 
         <FormLabel htmlFor="virtual">¿Evento Virtual?</FormLabel>
-        <FormToggle />
-      </fieldset>
-
-      <fieldset className="space-y-3">
-        <legend className="font-black text-4xl mb-5">
-          Ubicación Meeti
-        </legend>
-
-        <FormLabel id="place_name">Nombre Lugar:</FormLabel>
-        <FormInput
-          id="place_name"
-          type="text"
-          placeholder="Nombre Lugar evento"
+        <FormToggle
+          checked={isVirtual}
+          onChange={(e) => {
+            setValue('virtual', e.target.checked)
+          }}
         />
 
-
-        <DynamicLocationPicker />
       </fieldset>
+
+      {
+        !isVirtual && (
+          <fieldset className="space-y-3">
+            <legend className="font-black text-4xl mb-5">
+              Ubicación Meeti
+            </legend>
+
+            <FormLabel id="place_name">Nombre Lugar:</FormLabel>
+            <FormInput
+              id="place_name"
+              type="text"
+              placeholder="Nombre Lugar evento"
+              {...register('location.placeName')}
+            />
+            {'location' in errors && errors.location?.placeName && <FormError>{errors.location.placeName.message}</FormError>}
+
+            <DynamicLocationPicker />
+          </fieldset>
+        )
+      }
     </>
   )
 }

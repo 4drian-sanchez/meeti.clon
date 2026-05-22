@@ -21,7 +21,7 @@ export default function CommunityForm() {
       {errors.name && <FormError>{errors.name.message}</FormError>}
 
       <FormLabel>Imagen de la comunidad</FormLabel>
-      <UploadImage />
+      <UploadImage uploadImageLabel={"Imagen de la comunidad"} />
 
       <FormLabel htmlFor="description">Descripción de la comunidad</FormLabel>
       <FormTextarea

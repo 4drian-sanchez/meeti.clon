@@ -5,8 +5,13 @@ import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { FormError } from '../forms';
+import Heading from "../typography/Heading";
 
-export default function UploadImage() {
+type Props = {
+    uploadImageLabel : string
+}
+
+export default function UploadImage( {uploadImageLabel} : Props ) {
     const [uploadedImage, setUploadedImage] = useState('')
     const { setValue, formState: { errors }, getValues } = useFormContext<CommunityInput>()
 
@@ -37,7 +42,7 @@ export default function UploadImage() {
             />
             {uploadedImage &&
                 <>
-                    <p className="font-bold text-lg">Imagen subida</p>
+                    <p className="font-bold text-lg">{uploadImageLabel}</p>
                     <Image
                         src={uploadedImage}
                         alt='Imagen de la comunidad'
@@ -50,7 +55,7 @@ export default function UploadImage() {
             {
                 currentImage && !uploadedImage &&
                 <>
-                    <p className="font-bold text-lg">Imagen subida</p>
+                    <p className="font-bold text-lg">{uploadImageLabel}</p>
                     <Image
                         src={currentImage}
                         alt='Imagen de la comunidad'

@@ -26,8 +26,8 @@ export default function CreateMeeti() {
                 address: '',
                 city: '',
                 country: '',
-                lat: 25.776311,
-                lng: -80.3121477
+                lat: 8.138712,
+                lng: -71.986879
             }
         }
     })
