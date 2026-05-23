@@ -15,7 +15,6 @@ export default function CreateMeetiForm() {
   const { register, formState: { errors }, watch, setValue } = useFormContext<MeetiInput>()
   const isVirtual = watch('virtual')
 
-  console.log(errors)
   return (
     <>
       <fieldset className="space-y-3">

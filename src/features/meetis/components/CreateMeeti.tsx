@@ -6,6 +6,7 @@ import { useSession } from "@/src/lib/auth-client";
 import { useForm, FormProvider } from "react-hook-form";
 import { MeetiInput, MeetiSchema } from "../schemas/meetiSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { createMeetiAction } from "../actions/meeti-actions";
 
 export default function CreateMeeti() {
 
@@ -35,8 +36,9 @@ export default function CreateMeeti() {
     const { isPending } = useSession()
     if (isPending) return 'cargando...'
 
-    const onSubmit = () => {
-        console.log('Paso la validacion');
+    const onSubmit = async ( data : MeetiInput) => {
+        await createMeetiAction(data)
+        
     }
 
     return (
