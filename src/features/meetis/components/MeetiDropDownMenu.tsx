@@ -39,7 +39,7 @@ export default function MeetiDropdownMenu({ meeti }: Props) {
         </MenuItem>
         <MenuItem>
           <Link
-            href={'/dashboard/meetis/edit'}
+            href={`/dashboard/meetis/${meeti.id}/edit`}
             className="block px-3 py-1 text-sm/6 text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden"
           >
             Editar <span className="sr-only">, {meeti.title}</span>

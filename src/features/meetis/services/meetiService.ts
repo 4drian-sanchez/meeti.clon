@@ -40,6 +40,14 @@ class MetiService {
             attendanceCount: 0
         }))
     }
+
+    //* En una arquitectura limpia el service se encarga de manejar los errores y el repository de solo llamar a la DB
+    async getMeetiById( meetiId : string ) {
+        const meeti = await this.meetiRepository.getMeetiById(meetiId)
+        if(!meeti) throw new Error('Meeti no encontrado')
+
+        return meeti
+    }
 }
 
 export const meetiService = new MetiService(meetiRepository, communityRepository)

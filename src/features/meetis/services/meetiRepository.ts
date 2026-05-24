@@ -6,6 +6,7 @@ import { format } from "date-fns"
 export interface IMeetiRepository {
     insert(data: InsertMeeti): Promise<void>
     getUpcomingByUserId(userId : string) : Promise<SelectMeeti[]>
+    getMeetiById(meetiId: string) : Promise<SelectMeeti | null>
 }
 
 class MeetiRepository implements IMeetiRepository {
@@ -37,6 +38,19 @@ class MeetiRepository implements IMeetiRepository {
         })
 
         return meetiByUserId
+    }
+
+    async getMeetiById(meetiId: string): Promise<SelectMeeti | null> {
+        const meeti = await db.query.meeti.findFirst({
+            where: {
+                id: meetiId
+            },
+            with: {
+                location: true
+            }
+        })
+
+        return meeti || null
     }
 }
 

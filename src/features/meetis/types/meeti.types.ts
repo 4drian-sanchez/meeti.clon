@@ -4,7 +4,7 @@ export type InsertBasicMeeti = typeof meeti.$inferInsert
 export type InsertBasicLocation = typeof meetiLocations.$inferInsert
 
 export type SelectBasicMeeti = typeof meeti.$inferSelect
-export type SelectBasicLocation = typeof meeti.$inferSelect
+export type SelectMeetiLocation = typeof meetiLocations.$inferSelect
 
 export type InsertMeeti = InsertBasicMeeti & {
     location? : Omit<InsertBasicLocation, 'meetiId' | 'id'>
@@ -12,5 +12,5 @@ export type InsertMeeti = InsertBasicMeeti & {
 
 
 export type SelectMeeti = SelectBasicMeeti & {
-    location?: SelectBasicLocation
+    location?: SelectMeetiLocation | null
 }
