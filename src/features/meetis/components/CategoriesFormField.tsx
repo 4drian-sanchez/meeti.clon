@@ -4,7 +4,8 @@ import { Suspense, use } from "react";
 import { useFormContext } from "react-hook-form";
 import { MeetiInput } from "../schemas/meetiSchema";
 
-const categoriesPromise = fetch('/api/categories').then(res => res.json())
+const baseUrl = process.env.SITE_URL! ?? 'http://localhost:3000'
+const categoriesPromise = fetch(`${baseUrl}/api/categories`).then(res => res.json())
 
 function CategoriesOptions () {
 

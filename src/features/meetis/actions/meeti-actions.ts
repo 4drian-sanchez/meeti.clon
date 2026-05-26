@@ -30,3 +30,28 @@ export async function createMeetiAction(inputs: MeetiInput) {
 export async function getUpcominngMeetisByUserId( user: User) {
     return await meetiService.getUpcomingMeetiByUserId(user) 
 }
+
+export async function updatedMeeti( inputs: MeetiInput, meetiId: string ) {
+    
+    const { session } = await requireAuth()
+    if (!session) return {
+        error: 'Usuario no autenticado',
+        success: ''
+    }
+
+    const data = MeetiSchema.safeParse(inputs)
+
+    if (!data.success) return {
+        error: 'Hubo un error',
+        success: ''
+    }
+
+
+    
+    await meetiService.updateMeeti(inputs, meetiId, session.user)
+
+    return {
+        error: '',
+        success: 'Meeti Actualizado'
+    }
+}

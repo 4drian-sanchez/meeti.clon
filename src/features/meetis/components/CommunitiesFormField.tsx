@@ -3,7 +3,8 @@ import { Suspense, use } from "react";
 import { useFormContext } from "react-hook-form";
 import { MeetiInput } from "../schemas/meetiSchema";
 
-const communitiesPromise = fetch('/api/communities').then(res => res.json())
+const baseUrl = process.env.SITE_URL! ?? 'http://localhost:3000'
+const communitiesPromise = fetch(`${baseUrl}/api/communities`).then(res => res.json())
 
 function CommunitiesOptions () {
 

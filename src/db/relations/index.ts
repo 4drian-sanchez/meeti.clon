@@ -39,7 +39,7 @@ export const relations = defineRelations(schema, (r) => ({
   meeti: {
     location: r.one.meetiLocations({
       from: r.meeti.id,
-      to: r.meetiLocations.id
+      to: r.meetiLocations.meetiId
     })
   }
 }));
