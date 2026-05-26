@@ -26,9 +26,8 @@ const markerIcon = new Icon({
 
 export default function LocationPicker() {
 
-  const { register, getValues, setValue, clearErrors, formState: { errors }, watch } = useFormContext<MeetiInput>()
+  const { register, getValues, setValue, clearErrors, formState: { errors } } = useFormContext<MeetiInput>()
 
-  const city = watch('location.city')
 
   const lat = getValues('location.lat') ?? 8.138712
   const lng = getValues('location.lng') ?? -71.986879
@@ -44,12 +43,10 @@ export default function LocationPicker() {
       const url = GEOCODE_URL + `${positionTuple[1]},${positionTuple[0]}`
       const res = await fetch(url)
       const data = await res.json()
-
       const location = GeoCodeSchema.parse(data.address)
-      console.log('geo result', location) // verifica City aquí
 
       setValue('location.address', location.LongLabel)
-      setValue('location.city', city)
+      setValue('location.city', location.CountryCode)
       setValue('location.country', location.CountryCode)
       setValue('location.lat', location.InputY)
       setValue('location.lng', location.InputX)

@@ -29,7 +29,6 @@ export function EditMeeti({ meeti }: EditMeetiProps) {
             }
     })
 
-    console.log(methods.formState.errors)
 
     const onSubmit = async ( data: MeetiInput ) => {
 
@@ -42,7 +41,7 @@ export function EditMeeti({ meeti }: EditMeetiProps) {
         }
     }
 
-    return (
+    return ( 
         <>
             <FormProvider {...methods}>
                 <Form onSubmit={methods.handleSubmit(onSubmit)} noValidate>

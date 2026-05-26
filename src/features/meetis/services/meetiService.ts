@@ -50,6 +50,20 @@ class MetiService {
         return meeti
     }
 
+    async getMeetiWithDetails( meetiId: string, user?: User ) {
+        const meetiWithDetails = await this.meetiRepository.getFullById(meetiId)
+
+        return {
+            data: meetiWithDetails,
+            context: {
+
+            },
+            permissions: {
+                
+            }
+        }
+    }
+
     async getMeetiWithPermissions(meetiId: string, user: User) {
         const meeti = await this.getMeetiById(meetiId)
         return {
