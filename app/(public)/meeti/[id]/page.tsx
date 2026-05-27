@@ -1,10 +1,12 @@
 import { DynamicMeetiLocation } from "@/src/features/meetis/components/DynamicMeetiLocation";
 import { meetiService } from "@/src/features/meetis/services/meetiService";
 import Heading from "@/src/shared/components/typography/Heading";
+import { displayDate } from "@/src/shared/utils/date";
 import generatePageTitle from "@/src/shared/utils/metadata";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import OrganizerCard from "@/src/features/meetis/components/OrganizerCard";
 
 
 export async function generateMetadata(props: PageProps<'/meeti/[id]'>): Promise<Metadata> {
@@ -44,7 +46,7 @@ export default async function MeetiPage(props: PageProps<'/meeti/[id]'>) {
   const meeti = await meetiService.getMeetiWithDetails(id)
   if (!meeti.data) throw new Error('Meeti no encontrado')
 
-  const { data : { title, image, details, virtual : isVirtual, location, category, community } } = meeti
+  const { data: { title, image, details, virtual: isVirtual, date, time, location, category, community, admin } } = meeti
 
   return (
     <>
@@ -78,21 +80,36 @@ export default async function MeetiPage(props: PageProps<'/meeti/[id]'>) {
         </section>
 
         <aside className="bg-slate-100 rounded-2xl">
+          {isVirtual && (
+            <p className="bg-orange-500 py-3 w-full text-white text-center text-lg rounded-lg font-bold">Este Meeti es virtual</p>
+          )}
+          {
+            !isVirtual && location && (
+              <DynamicMeetiLocation
+                address={location.address}
+                lat={location.lat}
+                lng={location.lng}
+                placeName={location.placeName}
+              />
+            )
+          }
+
           <section className="space-y-5 p-10 ">
-            {isVirtual && (
-              <p className="bg-orange-500 py-3 w-full text-white text-center text-lg rounded-lg font-bold">Este Meeti es virtual</p>
-            )}
-            {
-              !isVirtual && location && (
-                <DynamicMeetiLocation 
-                  address={location.address} 
-                  lat={location.lat} 
-                  lng={location.lng} 
-                  placeName={location.placeName}
-                />
-              )
-            }
+            <Heading level={2}>Información del Meeti</Heading>
+            <p>
+              <span className="font-bold"> Fecha: {''}
+              </span>
+              {displayDate(date)}
+            </p>
+
+            <p>
+              <span className="font-bold"> Hora: {''}
+              </span>
+              {time}
+            </p>
+            <OrganizerCard user={admin} />
           </section>
+
         </aside>
       </main>
     </>

@@ -40,10 +40,10 @@ export default async function MeetisPage() {
                         {
                             getComingMeetis.map(meeti => {
 
-                                const { title, date, time, image } = meeti.data
+                                const { title, date, time, image, id } = meeti.data
 
                                 return (
-                                    <li key={meeti.data.id} className="flex justify-between gap-x-6 py-5">
+                                    <li key={id} className="flex justify-between gap-x-6 py-5">
                                         <div className="flex items-center min-w-0 gap-x-4">
                                             <Image
                                                 src={image}
@@ -54,9 +54,12 @@ export default async function MeetisPage() {
                                                 priority
                                             />
                                             <div className="min-w-0 flex-auto">
-                                                <a className="hover:underline font-bold text-lg">
+                                                <Link 
+                                                    className="hover:underline font-bold text-lg"
+                                                    href={`/meeti/${id}`}
+                                                >
                                                     {title}
-                                                </a>
+                                                </Link>
                                                 <p className="text-gray-600 text-sm">
                                                     {formatMeetiDate(date, time)}
                                                 </p>
