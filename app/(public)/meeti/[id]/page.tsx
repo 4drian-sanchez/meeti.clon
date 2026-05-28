@@ -7,6 +7,8 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import OrganizerCard from "@/src/features/meetis/components/OrganizerCard";
+import { requireAuth } from "@/src/lib/auth-server";
+import { AttendanceButton } from "@/src/features/meetis/components/AttendanceButton";
 
 
 export async function generateMetadata(props: PageProps<'/meeti/[id]'>): Promise<Metadata> {
@@ -42,11 +44,17 @@ export async function generateMetadata(props: PageProps<'/meeti/[id]'>): Promise
 
 export default async function MeetiPage(props: PageProps<'/meeti/[id]'>) {
 
+  const { session } = await requireAuth()
+
   const { id } = await props.params
-  const meeti = await meetiService.getMeetiWithDetails(id)
+  const meeti = await meetiService.getMeetiWithDetails(id, session?.user)
   if (!meeti.data) throw new Error('Meeti no encontrado')
 
-  const { data: { title, image, details, virtual: isVirtual, date, time, location, category, community, admin } } = meeti
+  const {
+    data: { title, image, details, virtual: isVirtual, date, time, location, category, community, admin },
+    permissions,
+    context : {admin : isAdmin}
+  } = meeti
 
   return (
     <>
@@ -66,6 +74,14 @@ export default async function MeetiPage(props: PageProps<'/meeti/[id]'>) {
       </nav>
 
       <Heading className="text-center mt-10">{title}</Heading>
+
+      <div className="max-w-7xl mx-auto my-5 flex justify-end">
+        {
+          permissions && !isAdmin && (
+            <AttendanceButton meetiId={id} permisisons={permissions}/>
+          )
+        }
+      </div>
 
       <main className="max-w-7xl mx-auto grid grid-cols-1 gap-5 lg:grid-cols-3 p-5 lg:px-0 mt-10">
         <section className="lg:col-span-2">

@@ -2,7 +2,7 @@ import { accounts, sessions, users, verifications } from './auth'
 import { community, communityMembers } from './comunity'
 import { NotificationSchema } from './notification'
 import { categories } from './category'
-import { meeti, meetiLocations } from './meeti'
+import { meeti, meetiLocations, meetiAttendees } from './meeti'
 
 export {
     accounts,
@@ -14,5 +14,6 @@ export {
     NotificationSchema,
     categories,
     meeti,
-    meetiLocations
+    meetiLocations,
+    meetiAttendees
 }

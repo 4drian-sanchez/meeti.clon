@@ -8,7 +8,5 @@ export const pluralize = ( word: string, count: number ) => {
         return word + 's'
     }
 
-    console.log(lastLetter)
-
     return word + 'es'
 }
