@@ -1,13 +1,12 @@
 import { requireAuth } from "@/src/lib/auth-server";
 import { communityService } from '../../../src/features/communities/services/CommunityService';
+import { NextResponse } from 'next/server';
+
 
 export async function GET() {
     const { session } = await requireAuth()
-    if( !session ) return new Response(JSON.stringify([]))
+    if( !session ) return NextResponse.json([])
 
     const communities = await communityService.getCommunitiesByUserAPI(session.user.id)
-    return new Response( JSON.stringify(communities), {
-        status: 200,
-        headers: {'Content-Type': 'application/json'}
-    } )
+    return NextResponse.json(communities)
 }
