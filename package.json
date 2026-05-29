@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "drizzle:seed": "tsx ./src/db/seed",
+    "seed:categories": "tsx ./src/db/seed/categories",
     "seed:auth": "tsx ./src/db/seed/auth"
   },
   "dependencies": {

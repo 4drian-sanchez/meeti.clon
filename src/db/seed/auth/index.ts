@@ -1,8 +1,8 @@
+import 'dotenv/config'
 import { hashPassword } from "better-auth/crypto";
 import type { AccountSeed, RawUser, UserSeed } from './types'
 import { accounts, users } from "../../schemas";
 import { drizzle } from "drizzle-orm/node-postgres";
-import 'dotenv/config'
 
 
 async function authSeeder() {
