@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "drizzle:seed": "tsx ./src/db/seed"
+    "drizzle:seed": "tsx ./src/db/seed",
+    "seed:auth": "tsx ./src/db/seed/auth"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
