@@ -1,5 +1,5 @@
 import { pusher } from "@/src/lib/pusher";
-import { SelectNotification } from "../../types/notification.types";
+import { SelectNotification } from "../types/notification.types";
 
 export interface INotificationPublisher {
     verify(notification: SelectNotification): Promise<void>

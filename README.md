@@ -9,8 +9,15 @@ Arranca el modo desarrollo con el comando ```npm run dev``` y abre tu navegador 
 # Variables de entorno
 Clona el archivo ```.env.example``` y renombralo a ```.env```. Luego, llena las variables de entorno con los valores correspondientes.
 
+# Base de datos
+Limpiar la DB de desarrollo:
+1. Detener el contenedor de la DB ```docker stop meeti_app```
+2. Eliminar la carpeta bind Volume llamada postgres que se encuentra en la raiz del proyecto
+3. Inicar el contenedor de la DB ```docker start meeti_app```
+4. Crear tablas ```npx drizzle-kit push```
+
 # Seed
-Ejecuta el comando ```npm run drizzle:seed``` para agregar las categorias a la base de datos
+Categorias: ```npm run seed:categories``` 
 
 # API
 * Obtener todas las categorias: ```GET /api/categories```

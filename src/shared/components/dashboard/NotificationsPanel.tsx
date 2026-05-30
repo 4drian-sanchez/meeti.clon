@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Pusher from 'pusher-js'
 import { useSession } from '@/src/lib/auth-client'
 import { BellIcon } from '@heroicons/react/24/outline'
-import { SelectNotification } from '@/src/features/types/notification.types'
+import { SelectNotification } from '@/src/features/notifications/types/notification.types'
 
 const promise = fetch('/api/notification').then(res => res.json())
 

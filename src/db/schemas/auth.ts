@@ -13,9 +13,7 @@ export const users = pgTable("users", {
     .notNull(),
 });
 
-export const sessions = pgTable(
-  "sessions",
-  {
+export const sessions = pgTable( "sessions", {
     id: text("id").primaryKey(),
     expiresAt: timestamp("expires_at").notNull(),
     token: text("token").notNull().unique(),
@@ -32,9 +30,7 @@ export const sessions = pgTable(
   (table) => [index("sessions_userId_idx").on(table.userId)],
 );
 
-export const accounts = pgTable(
-  "accounts",
-  {
+export const accounts = pgTable( "accounts", {
     id: text("id").primaryKey(),
     accountId: text("account_id").notNull(),
     providerId: text("provider_id").notNull(),
@@ -56,9 +52,7 @@ export const accounts = pgTable(
   (table) => [index("accounts_userId_idx").on(table.userId)],
 );
 
-export const verifications = pgTable(
-  "verifications",
-  {
+export const verifications = pgTable( "verifications", {
     id: text("id").primaryKey(),
     identifier: text("identifier").notNull(),
     value: text("value").notNull(),

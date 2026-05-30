@@ -1,6 +1,6 @@
 import { db } from "@/src/db";
-import { SelectNotification, InsertNotification } from "../../types/notification.types";
-import { NotificationSchema } from "@/src/db/schemas";
+import { SelectNotification, InsertNotification } from "../types/notification.types";
+import { notifications } from "@/src/db/schemas";
 import { and, count, eq } from "drizzle-orm";
 
 
@@ -14,20 +14,20 @@ export interface INotificationRepository {
 class NotificationRepository implements INotificationRepository {
     
     async create(data: InsertNotification): Promise<SelectNotification> {
-        const [ notification ] = await db.insert(NotificationSchema).values(data).returning()
+        const [ notification ] = await db.insert(notifications).values(data).returning()
         return notification
     }
 
     async unreadCount(userId: string): Promise<number> {
         const [result] = await db
                                 .select( { count: count() } )
-                                .from(NotificationSchema)
-                                .where( and(  eq( NotificationSchema.userId, userId ), eq( NotificationSchema.read, false ) ) )
+                                .from(notifications)
+                                .where( and(  eq( notifications.userId, userId ), eq( notifications.read, false ) ) )
         return result.count
     }
 
     async notificationByUserId(userId: string): Promise<SelectNotification[]> {
-        const result = await db.query.NotificationSchema.findMany({
+        const result = await db.query.notifications.findMany({
             where: {
                 AND: [
                     {userId: {eq: userId}},
@@ -42,7 +42,7 @@ class NotificationRepository implements INotificationRepository {
 
     async deleteNotification(userId: string): Promise<void> {
         //*Eliminado logico
-        await db.update(NotificationSchema).set({read: true}).where( eq(NotificationSchema.userId, userId) )
+        await db.update(notifications).set({read: true}).where( eq(notifications.userId, userId) )
     }
 }
 

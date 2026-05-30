@@ -1,19 +1,5 @@
-import { accounts, sessions, users, verifications } from './auth'
-import { community, communityMembers } from './comunity'
-import { NotificationSchema } from './notification'
-import { categories } from './category'
-import { meeti, meetiLocations, meetiAttendees } from './meeti'
-
-export {
-    accounts,
-    sessions,
-    users,
-    verifications,
-    community as comunity,
-    communityMembers,
-    NotificationSchema,
-    categories,
-    meeti,
-    meetiLocations,
-    meetiAttendees
-}
+export { accounts, sessions, users, verifications } from './auth'
+export { communities, communityMembers } from './community'
+export { notifications } from './notification'
+export { categories } from './category'
+export { meetis, meetisLocations, meetisAttendees } from './meeti'

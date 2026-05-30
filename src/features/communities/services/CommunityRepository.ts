@@ -1,6 +1,6 @@
 import { InsertComunity, SelectComunity } from '../types/community.types';
 import { db } from "@/src/db";
-import { community } from "@/src/db/schemas/comunity";
+import { communities } from "@/src/db/schemas/community";
 import { eq } from "drizzle-orm";
 import { CommunityInput } from '../schemas/communitiesSchema';
 
@@ -15,39 +15,39 @@ export interface ICommunityRepository {
 class CommunityRepository implements ICommunityRepository {
 
     async create( data : InsertComunity ) {
-        const [createdCommunity] = await db.insert(community).values(data).returning()
+        const [createdCommunity] = await db.insert(communities).values(data).returning()
         return createdCommunity
     }
 
     async findCommunitiesByUser(userId: string, limit: number = 10): Promise<SelectComunity[]> {
-        const communities = await db
+        const result = await db
                                     .select()
-                                    .from(community)
-                                    .where( eq(community.createdBy, userId))
+                                    .from(communities)
+                                    .where( eq(communities.createdBy, userId))
                                     .limit(limit)
-        return communities
+        return result
     }
 
     async findCommunityById(communityId: string): Promise<SelectComunity | undefined> {
         const [ communityById ] = await db
                                     .select()
-                                    .from(community)
-                                    .where( eq(community.id, communityId))
+                                    .from(communities)
+                                    .where( eq(communities.id, communityId))
                                     .limit(1)
         return communityById
     }
 
     async updatedCommunity(communityId: string, data: CommunityInput): Promise<void> {
         await db
-                .update(community)
+                .update(communities)
                 .set({...data})
-                .where( eq(community.id, communityId ) )
+                .where( eq(communities.id, communityId ) )
     }
 
     async deleteCommunity(communityId: string): Promise<void> {
         await db
-                .delete(community)
-                .where(eq(community.id, communityId ))
+                .delete(communities)
+                .where(eq(communities.id, communityId ))
     }
 
 }

@@ -1,8 +1,8 @@
 import { pgTable, uuid, varchar, text, boolean, time, date, integer, doublePrecision, timestamp } from "drizzle-orm/pg-core";
-import { community } from "./comunity";
+import { communities } from "./community";
 import { users } from "./auth";
 
-export const meeti = pgTable('meetis', {
+export const meetis = pgTable('meetis', {
   id: uuid("id").primaryKey().defaultRandom(),
   title: varchar('title', {length: 255}).notNull(),
   details: text('details').notNull(),
@@ -10,17 +10,17 @@ export const meeti = pgTable('meetis', {
   date: date('date', {mode: 'string'}).notNull(),
   time: time('time').notNull(),
   image: varchar('image', {length: 100}).notNull(),
-  communityId: uuid('community_id').references(() => community.id, {onDelete: 'cascade'}).notNull(),
+  communityId: uuid('community_id').references(() => communities.id, {onDelete: 'cascade'}).notNull(),
   categoryId: uuid('category_id').notNull(),
   createdBy: text('created_by').references(() => users.id, {onDelete: 'cascade'}).notNull(),
   virtual: boolean('virtual').default(false).notNull()
 })
 
-export const meetiLocations = pgTable('meeti_locations', {
+export const meetisLocations = pgTable('meetis_locations', {
   id: uuid('id').primaryKey().defaultRandom(),
   meetiId: uuid('meeti_id')
     .notNull()
-    .references(() => meeti.id, { onDelete: 'cascade' }),
+    .references(() => meetis.id, { onDelete: 'cascade' }),
   placeName: varchar('place_name', {length: 255}).notNull(),
   address: varchar('address', {length: 255}).notNull(),
   city: varchar('city', {length: 100}).notNull(),
@@ -29,10 +29,10 @@ export const meetiLocations = pgTable('meeti_locations', {
   lng: doublePrecision("longitude").notNull(),
 });
 
-export const meetiAttendees = pgTable('meetiAttendes', {
+export const meetisAttendees = pgTable('meetisAttendes', {
     meetiId: uuid('meeti_id')
     .notNull()
-    .references(() => meeti.id, { onDelete: 'cascade' }),
+    .references(() => meetis.id, { onDelete: 'cascade' }),
     userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at').defaultNow().notNull()
 })

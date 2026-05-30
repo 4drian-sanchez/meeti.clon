@@ -1,7 +1,7 @@
 "use client"
 
 import { formatCreatedDate } from "@/src/shared/utils/date";
-import { SelectNotification } from "../../types/notification.types";
+import { SelectNotification } from "../types/notification.types";
 import { useEffect, useState } from "react";
 import { useSession } from "@/src/lib/auth-client";
 import Pusher from 'pusher-js'

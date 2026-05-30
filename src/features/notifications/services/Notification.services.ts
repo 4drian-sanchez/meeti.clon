@@ -1,4 +1,4 @@
-import { InsertNotification, SelectNotification } from '../../types/notification.types';
+import { InsertNotification, SelectNotification } from '../types/notification.types';
 import { INotificationPublisher, notificationPusher } from './Notification.pusher';
 import { INotificationRepository, notificationRepository } from './Notification.repository';
 
